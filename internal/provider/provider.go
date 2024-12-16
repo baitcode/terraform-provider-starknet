@@ -152,7 +152,7 @@ func (p *StarknetProvider) Configure(ctx context.Context, req provider.Configure
 
 func (p *StarknetProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
-		NewExampleResource,
+		// NewExampleResource,
 	}
 }
 
@@ -164,7 +164,7 @@ func (p *StarknetProvider) DataSources(ctx context.Context) []func() datasource.
 
 func (p *StarknetProvider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
-		NewExampleFunction,
+		// NewExampleFunction,
 	}
 }
 
