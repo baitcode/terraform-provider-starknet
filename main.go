@@ -8,7 +8,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/baitcode/starknet-terraform-provider/internal/provider"
+	"github.com/baitcode/terraform-provider-starknet/internal/provider"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
@@ -32,7 +32,7 @@ func main() {
 		// TODO: Update this string with the published name of your provider.
 		// Also update the tfplugindocs generate command to either remove the
 		// -provider-name flag or set its value to the updated provider name.
-		Address: "registry.terraform.io/hashicorp/scaffolding",
+		Address: "registry.terraform.io/baitcode/terraform-provider-starknet",
 		Debug:   debug,
 	}
 

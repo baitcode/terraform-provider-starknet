@@ -13,6 +13,8 @@ Example resource
 ## Example Usage
 
 ```terraform
+# Copyright (c) HashiCorp, Inc.
+
 resource "scaffolding_example" "example" {
   configurable_attribute = "some-value"
 }

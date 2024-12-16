@@ -2,10 +2,10 @@ default: fmt lint install generate
 
 build:
 	go build -v ./...
-	cp ./terraform-provider-starknet ~/.terraform.d/plugins/local/baitcode/starknet/1.0.0/darwin_arm64/terraform-provider-starknet
 
 install: build
 	go install -v ./...
+	rm ~/.terraform.d/plugins/local/baitcode/starknet/1.0.0/darwin_arm64/terraform-provider-starknet | true
 	cp ~/go/bin/terraform-provider-starknet ~/.terraform.d/plugins/local/baitcode/starknet/1.0.0/darwin_arm64/terraform-provider-starknet
 
 lint:
