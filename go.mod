@@ -5,7 +5,7 @@ go 1.23.1
 toolchain go1.23.4
 
 require (
-	github.com/NethermindEth/juno v0.12.2
+	github.com/NethermindEth/juno v0.12.5
 	github.com/NethermindEth/starknet.go v0.7.3
 	github.com/hashicorp/terraform-plugin-framework v1.13.0
 	github.com/hashicorp/terraform-plugin-go v0.26.0
@@ -14,12 +14,12 @@ require (
 
 require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/bits-and-blooms/bitset v1.14.2 // indirect
+	github.com/bits-and-blooms/bitset v1.14.3 // indirect
 	github.com/consensys/bavard v0.1.13 // indirect
-	github.com/consensys/gnark-crypto v0.13.0 // indirect
+	github.com/consensys/gnark-crypto v0.14.0 // indirect
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/deckarep/golang-set/v2 v2.6.0 // indirect
-	github.com/ethereum/go-ethereum v1.14.8 // indirect
+	github.com/ethereum/go-ethereum v1.14.11 // indirect
 	github.com/fatih/color v1.16.0 // indirect
 	github.com/fxamacker/cbor/v2 v2.7.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
