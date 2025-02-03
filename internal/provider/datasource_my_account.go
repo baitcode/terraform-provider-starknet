@@ -8,21 +8,21 @@ import (
 	"fmt"
 
 	"github.com/NethermindEth/starknet.go/rpc"
+
 	"github.com/baitcode/terraform-provider-starknet/internal/provider/types"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/datasource/schema"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
 // Ensure provider defined types fully satisfy framework interfaces.
-var _ datasource.DataSource = &AccountDataSource{}
+var _ datasource.DataSource = &MyAccountDataSource{}
 
-func NewAccountDataSource() datasource.DataSource {
-	return &AccountDataSource{}
+func NewMyAccountDataSource() datasource.DataSource {
+	return &MyAccountDataSource{}
 }
 
-// AccountDataSource defines the data source implementation.
-type AccountDataSource struct {
+// MyAccountDataSource defines the data source implementation.
+type MyAccountDataSource struct {
 	client  *rpc.Provider
 	address types.Felt
 }
@@ -31,26 +31,41 @@ type AccountDataSource struct {
 type AccountDataSourceModel struct {
 	Address   types.Felt `tfsdk:"address"`
 	ClassHash types.Felt `tfsdk:"class_hash"`
+	// PublicKey framework_types.String `tfsdk:"public_key"`
 }
 
-func (d *AccountDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_account"
+func (d *MyAccountDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_my_account"
 }
 
-func (d *AccountDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
+func (d *MyAccountDataSource) Schema(ctx context.Context, req datasource.SchemaRequest, resp *datasource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		MarkdownDescription: "Starknet account data source",
 
 		Attributes: map[string]schema.Attribute{
 			"address": schema.StringAttribute{
+				CustomType:          types.FeltType{},
 				MarkdownDescription: "Account address",
+				Required:            false,
 				Computed:            true,
 			},
+			"class_hash": schema.StringAttribute{
+				CustomType:          types.FeltType{},
+				MarkdownDescription: "Class hash",
+				Required:            false,
+				Computed:            true,
+			},
+			// "public_key": schema.StringAttribute{
+			// 	CustomType:          framework_types.StringType,
+			// 	MarkdownDescription: "Public Key",
+			// 	Required:            false,
+			// 	Computed:            true,
+			// },
 		},
 	}
 }
 
-func (d *AccountDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
+func (d *MyAccountDataSource) Configure(ctx context.Context, req datasource.ConfigureRequest, resp *datasource.ConfigureResponse) {
 	// Prevent panic if the provider has not been configured.
 	if req.ProviderData == nil {
 		return
@@ -68,10 +83,12 @@ func (d *AccountDataSource) Configure(ctx context.Context, req datasource.Config
 	}
 
 	d.client = data.client
+	// TODO: precedence needed. only override if not set
 	d.address.Felt = data.address
+	// d.publicKey = data.publicKey
 }
 
-func (d *AccountDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
+func (d *MyAccountDataSource) Read(ctx context.Context, req datasource.ReadRequest, resp *datasource.ReadResponse) {
 	var data AccountDataSourceModel
 
 	// Read Terraform configuration data into the model
@@ -81,26 +98,24 @@ func (d *AccountDataSource) Read(ctx context.Context, req datasource.ReadRequest
 		return
 	}
 
-	// If applicable, this is a great opportunity to initialize any necessary
-	// provider client data and make a call using it.
+	address := d.address.Felt
 
 	classHash, err := d.client.ClassHashAt(
 		context.Background(),
 		rpc.WithBlockTag("latest"),
-		d.address.Felt,
+		address,
 	)
+
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
-			fmt.Sprintf("Error reading account class hash: %s", err),
+			fmt.Sprintf("Error reading account %s class hash: %s", address.String(), err),
 		)
 		return
 	}
 
 	data.Address = d.address
 	data.ClassHash.Felt = classHash
-
-	tflog.Trace(ctx, "read a data source")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }

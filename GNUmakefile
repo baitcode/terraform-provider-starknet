@@ -5,8 +5,8 @@ build:
 
 install: build
 	go install -v ./...
-	rm ~/.terraform.d/plugins/local/baitcode/starknet/1.0.0/darwin_arm64/terraform-provider-starknet | true
-	cp ~/go/bin/terraform-provider-starknet ~/.terraform.d/plugins/local/baitcode/starknet/1.0.0/darwin_arm64/terraform-provider-starknet
+	rm ${LOCAL_BIN_DIR} | true
+	cp ~/go/bin/terraform-provider-starknet ${LOCAL_BIN_DIR}
 
 lint:
 	golangci-lint run

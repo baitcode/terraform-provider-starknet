@@ -9,7 +9,6 @@ import (
 	"log"
 
 	"github.com/baitcode/terraform-provider-starknet/internal/provider"
-
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 )
 
